@@ -1,4 +1,2 @@
 google.generativeai
-time
-os
 streamlit
