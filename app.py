@@ -48,6 +48,7 @@ Please recommend 5-7 books tailored to this reader. For each book, include:
 - 🎧 Audiobook info
 - ⚠️ Content warnings
 - 🎥 Adaptation info
+- 🖼️ Book Cover Image (as a direct image link)
 - 🔗 Clickable Goodreads or Amazon Link
 
 Separate each recommendation clearly. Respond in markdown.
@@ -61,15 +62,29 @@ if st.button("Get Recommendations"):
         recommendations_text = get_recommendations()
 
         # Split recommendations by "###" or some consistent pattern
-##        books = re.split(r"\*{3,}|\n(?=\ud83d\udcd8)|\n(?=\*\*Recommendation)\s*", recommendations_text)
-##        for book in books:
-##            if not book.strip():
-##                continue
-
-            # Split on markers like '📘 Title and Author'
-        books = recommendations_text.split("📘")[1:]  # Skip initial empty
+        books = re.split(r"\*{3,}|\n(?=\ud83d\udcd8)|\n(?=\*\*Recommendation)\s*", recommendations_text)
         for book in books:
-            book_info = "📘" + book.strip()
-            witty = get_witty_intro(book_info)
+            if not book.strip():
+                continue
+
+            witty = get_witty_intro(book)
             st.markdown(f"### 💬 {witty}")
-            st.markdown(book_info, unsafe_allow_html=False)
+
+            # Extract image URL
+            image_match = re.search(r'\!\[.*?\]\((.*?)\)', book)
+            image_url = image_match.group(1) if image_match else None
+
+            # Extract Goodreads or Amazon link
+            link_match = re.search(r'https?://[\w./-]+', book)
+            link = link_match.group(0) if link_match else None
+
+            if image_url:
+                st.image(image_url, width=160)
+
+            if link:
+                st.markdown(f"[View on Goodreads or Amazon]({link})")
+
+            # Clean up markdown and show rest
+            cleaned = re.sub(r'\!\[.*?\]\(.*?\)', '', book)  # remove image markdown
+            cleaned = re.sub(r'https?://[\w./-]+', '', cleaned)  # remove duplicate link
+            st.markdown(cleaned)
