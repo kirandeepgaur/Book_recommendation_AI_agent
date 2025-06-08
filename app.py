@@ -60,26 +60,24 @@ if st.button("Get Recommendations"):
     with st.spinner("Shelfie is curating your perfect list..."):
         recommendations_text = get_recommendations()
 
-        # Split recommendations by headings or stars
-        books = re.split(r"\*{3,}|\n(?=\ud83d\udcd8)|\n(?=\*\*Recommendation)\s*", recommendations_text)
+        # Split recommendations
+        books = re.split(r"\*{3,}|\n(?=📘)|\n(?=###)|\n(?=\*\*Recommendation)", recommendations_text)
 
         for book in books:
-            if not book.strip():
+            book = book.strip()
+            if not book:
                 continue
 
-            witty = get_witty_intro(book)
-            st.markdown(f"### 💬 {witty}\n", unsafe_allow_html=True)
-
-            # Clean up markdown
+            # Clean up markdown before display
             cleaned = re.sub(r'\!\[.*?\]\(.*?\)', '', book)  # remove image markdown
             cleaned = re.sub(r'https?://[\w./-]+', '', cleaned)  # remove bare URLs
-            cleaned = re.sub(r"(📘|🗓|📚|✍️|⭐|🎧|⚠️|🎥|🔗)", r"\n\1", cleaned)  # inject newlines before bullets
+            cleaned = re.sub(r"(📘|🗓|📚|✍️|⭐|🎧|⚠️|🎥|🔗)", r"\n\1", cleaned)  # line breaks for readability
 
-            # Extract Goodreads or Amazon link (only the first one)
-            link_match = re.search(r'https?://[\w./-]+', book)
-            link = link_match.group(0) if link_match else None
-
+            witty = get_witty_intro(cleaned)
+            st.markdown(f"### 💬 {witty}\n", unsafe_allow_html=True)
             st.markdown(cleaned + "\n---\n", unsafe_allow_html=True)
 
-            if link:
-                st.markdown(f"[View on Goodreads or Amazon]({link})")
+            # Extract Goodreads or Amazon link
+            link_match = re.search(r'https?://[\w./-]+', book)
+            if link_match:
+                st.markdown(f"[View on Goodreads or Amazon]({link_match.group(0)})")
