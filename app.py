@@ -61,23 +61,15 @@ if st.button("Get Recommendations"):
         recommendations_text = get_recommendations()
 
         # Split recommendations by "###" or some consistent pattern
-        books = re.split(r"\*{3,}|\n(?=\ud83d\udcd8)|\n(?=\*\*Recommendation)\s*", recommendations_text)
+##        books = re.split(r"\*{3,}|\n(?=\ud83d\udcd8)|\n(?=\*\*Recommendation)\s*", recommendations_text)
+##        for book in books:
+##            if not book.strip():
+##                continue
+
+            # Split on markers like '📘 Title and Author'
+        books = recommendations_text.split("📘")[1:]  # Skip initial empty
         for book in books:
-            if not book.strip():
-                continue
-
-            witty = get_witty_intro(book)
+            book_info = "📘" + book.strip()
+            witty = get_witty_intro(book_info)
             st.markdown(f"### 💬 {witty}")
-
-
-            # Extract Goodreads or Amazon link
-            link_match = re.search(r'https?://[\w./-]+', book)
-            link = link_match.group(0) if link_match else None
-
-
-            if link:
-                st.markdown(f"[View on Goodreads or Amazon]({link})")
-
-            # Clean up markdown and show rest
-            cleaned = re.sub(r'https?://[\w./-]+', '', cleaned)  # remove duplicate link
-            st.markdown(cleaned)
+            st.markdown(book_info, unsafe_allow_html=False)
