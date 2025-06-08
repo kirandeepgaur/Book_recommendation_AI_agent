@@ -1,9 +1,3 @@
-import google.generativeai as genai
-from IPython.display import display, Markdown
-import time
-import os
-import streamlit as st
-
 os.environ["GOOGLE_API_KEY"] = "AIzaSyD2znxD_HpsvsA9n-G6kUey3yaTd06s0Qc"
 genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
 
