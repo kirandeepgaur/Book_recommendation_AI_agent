@@ -47,6 +47,8 @@ Please recommend 5-7 books tailored to this reader. For each book, include:
 - 🎧 Audiobook info
 - ⚠️ Content warnings
 - 🎥 Adaptation info
+- 🖼️ **Book Cover Image** (as a direct image link)
+- 🔗 **Clickable Goodreads or Amazon Link**
 
 Separate each recommendation clearly.
 """
