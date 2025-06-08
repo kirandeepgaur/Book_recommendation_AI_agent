@@ -1,0 +1,5 @@
+google.generativeai
+IPython.display
+time
+os
+streamlit
