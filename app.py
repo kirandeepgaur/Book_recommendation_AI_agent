@@ -6,7 +6,7 @@ genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 
 # Streamlit UI
 st.title("📚 Shelfie - Your Personal Book Curator")
-st.subtitle("Tell me your taste and I'll add my flavors to it.")
+st.subheader("Tell me your taste and I'll add my flavors to it.")
 reader_type = st.radio("Reading level", ["First-time", "Occasional", "Seasoned"])
 favorites = st.text_input("Favorite books or authors?")
 genre = st.text_input("Preferred genres or themes(like romance, fantasy, self-help, classical literature, Thriller)?")
