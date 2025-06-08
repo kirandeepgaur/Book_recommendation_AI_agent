@@ -1,5 +1,8 @@
-os.environ["GOOGLE_API_KEY"] = "AIzaSyD2znxD_HpsvsA9n-G6kUey3yaTd06s0Qc"
-genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
+import os
+import streamlit as st
+import google.generativeai as genai
+
+genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 
 
 st.title("📚 Shelfie - Your AI Book Curator")
