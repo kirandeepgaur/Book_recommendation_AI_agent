@@ -85,6 +85,5 @@ if st.button("Get Recommendations"):
                 st.markdown(f"[View on Goodreads or Amazon]({link})")
 
             # Clean up markdown and show rest
-            cleaned = re.sub(r'\!\[.*?\]\(.*?\)', '', book)  # remove image markdown
             cleaned = re.sub(r'https?://[\w./-]+', '', cleaned)  # remove duplicate link
             st.markdown(cleaned)
