@@ -67,7 +67,8 @@ if st.button("Get Recommendations"):
                 continue
 
             witty = get_witty_intro(book)
-            st.markdown(f"### 💬 {witty}")
+            st.markdown(f"### 💬 {witty}\n", unsafe_allow_html=True)
+            st.markdown(cleaned + "\n---\n", unsafe_allow_html=True)
 
             # Extract Goodreads or Amazon link
             link_match = re.search(r'https?://[\w./-]+', book)
