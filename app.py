@@ -48,7 +48,6 @@ Please recommend 5-7 books tailored to this reader. For each book, include:
 - 🎧 Audiobook info
 - ⚠️ Content warnings
 - 🎥 Adaptation info
-- 🖼️ Book Cover Image (as a direct image link)
 - 🔗 Clickable Goodreads or Amazon Link
 
 Separate each recommendation clearly. Respond in markdown.
@@ -70,21 +69,15 @@ if st.button("Get Recommendations"):
             witty = get_witty_intro(book)
             st.markdown(f"### 💬 {witty}")
 
-            # Extract image URL
-            image_match = re.search(r'\!\[.*?\]\((.*?)\)', book)
-            image_url = image_match.group(1) if image_match else None
 
             # Extract Goodreads or Amazon link
             link_match = re.search(r'https?://[\w./-]+', book)
             link = link_match.group(0) if link_match else None
 
-            if image_url:
-                st.image(image_url, width=160)
 
             if link:
                 st.markdown(f"[View on Goodreads or Amazon]({link})")
 
             # Clean up markdown and show rest
-            cleaned = re.sub(r'\!\[.*?\]\(.*?\)', '', book)  # remove image markdown
             cleaned = re.sub(r'https?://[\w./-]+', '', cleaned)  # remove duplicate link
             st.markdown(cleaned)
