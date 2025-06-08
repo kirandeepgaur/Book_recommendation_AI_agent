@@ -50,7 +50,7 @@ Please recommend 5-7 books tailored to this reader. For each book, include:
 - 🎥 Adaptation info
 - 🔗 Clickable Goodreads or Amazon Link
 
-Separate each recommendation clearly. Respond in markdown.
+Separate each recommendation clearly. Respond in markdown with two newlines between sections.
 """
     response = model.generate_content(main_prompt)
     return response.text
@@ -60,25 +60,26 @@ if st.button("Get Recommendations"):
     with st.spinner("Shelfie is curating your perfect list..."):
         recommendations_text = get_recommendations()
 
-        # Split recommendations by common patterns
+        # Split recommendations by headings or stars
         books = re.split(r"\*{3,}|\n(?=\ud83d\udcd8)|\n(?=\*\*Recommendation)\s*", recommendations_text)
+
         for book in books:
             if not book.strip():
                 continue
 
             witty = get_witty_intro(book)
             st.markdown(f"### 💬 {witty}\n", unsafe_allow_html=True)
-            st.markdown(cleaned + "\n---\n", unsafe_allow_html=True)
 
-            # Extract Goodreads or Amazon link
+            # Clean up markdown
+            cleaned = re.sub(r'\!\[.*?\]\(.*?\)', '', book)  # remove image markdown
+            cleaned = re.sub(r'https?://[\w./-]+', '', cleaned)  # remove bare URLs
+            cleaned = re.sub(r"(📘|🗓|📚|✍️|⭐|🎧|⚠️|🎥|🔗)", r"\n\1", cleaned)  # inject newlines before bullets
+
+            # Extract Goodreads or Amazon link (only the first one)
             link_match = re.search(r'https?://[\w./-]+', book)
             link = link_match.group(0) if link_match else None
 
+            st.markdown(cleaned + "\n---\n", unsafe_allow_html=True)
+
             if link:
                 st.markdown(f"[View on Goodreads or Amazon]({link})")
-
-            # Clean up markdown: remove image markdown and duplicate links
-            cleaned = re.sub(r'\!\[.*?\]\(.*?\)', '', book)  # remove image markdown
-            cleaned = re.sub(r'https?://[\w./-]+', '', cleaned)  # remove plain URLs
-            st.markdown(cleaned)
-
